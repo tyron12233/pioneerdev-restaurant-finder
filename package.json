@@ -11,9 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@api/fsq-developers": "file:.api/apis/fsq-developers",
     "@google/genai": "^1.29.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "zod": "^3.25.73",
+    "zod-to-json-schema": "^3.24.6"
   },
   "devDependencies": {
     "@types/express": "^5.0.5"

@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 
-interface ApiError extends Error {
+export interface ApiError extends Error {
     statusCode?: number;
     details?: any;
 }

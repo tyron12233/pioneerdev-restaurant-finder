@@ -1,10 +1,20 @@
-import { foursquareClient } from "../integrations/foursquare.client";
+import {
+  foursquareClient,
+  FoursquareRestuarant,
+} from "../integrations/foursquare.client";
+import { geminiClient } from "../integrations/gemini.client";
 
 export const restaurantService = {
-  async processMessage(message: string): Promise<void> {
-    const results = await foursquareClient.searchRestuarants({
-      query: message,
-    });
-    console.log("Foursquare Search Results:", results);
+  async processMessage(message: string): Promise<FoursquareRestuarant[]> {
+    const llmQuery = await geminiClient.processMessage(message);
+
+    if (!llmQuery) {
+      throw new Error("LLM: Failed to extract query parameters from message");
+    }
+
+    console.log("LLM Extracted Query:", llmQuery);
+
+    const results = await foursquareClient.searchRestuarants(llmQuery);
+    return results.results;
   },
 };

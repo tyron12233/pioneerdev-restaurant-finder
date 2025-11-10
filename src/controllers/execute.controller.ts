@@ -1,5 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { restaurantService } from "../services/restaurant.service";
+import { geminiClient } from "../integrations/gemini.client";
 
 export const executeController: RequestHandler = async (
   req: Request,
@@ -17,11 +18,11 @@ export const executeController: RequestHandler = async (
       return;
     }
 
-    const result = await restaurantService.processMessage(message);
+    const response = await restaurantService.processMessage(message);
 
     res.status(200).json({
       success: true,
-      data: result,
+      data: response,
     });
   } catch (error) {
     next(error);
