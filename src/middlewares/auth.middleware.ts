@@ -13,7 +13,7 @@ export const validateCode: RequestHandler = (req, res, next) => {
     const codeSecret = process.env.CODE_SECRET
     if (code !== codeSecret) {
         res.status(403).json({
-            message: 'Invalid code'
+            message: 'Permission denied: Invalid code.'
         });
         return;
     }
