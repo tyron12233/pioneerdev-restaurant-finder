@@ -14,3 +14,11 @@ test("Sample test for restaurant service", async () => {
     expect(firstResult).toHaveProperty("location");
   }
 });
+
+test("Handles unparsable message gracefully", async () => {
+  expect(restaurantService.processMessage("asdasdasd")).rejects.toThrow();
+});
+
+test("Handles empty message gracefully", async () => {
+  expect(restaurantService.processMessage("")).rejects.toThrow();
+});
