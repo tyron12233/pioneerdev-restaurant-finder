@@ -2,6 +2,12 @@ import z from "zod";
 
 export const querySchema = z
   .object({
+    unparsable: z
+      .boolean()
+      .optional()
+      .describe(
+        "Indicates if the message could not be parsed or more information is needed"
+      ),
     query: z
       .string()
       .describe("The search query string extracted from the message"),
