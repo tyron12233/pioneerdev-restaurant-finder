@@ -8,6 +8,33 @@ export const querySchema = z
       .describe(
         "Indicates if the message could not be parsed or more information is needed"
       ),
+    sort: z
+      .enum(["DISTANCE", "RELEVANCE", "RATING", "POPULARITY"])
+      .describe(
+        "Specifies the order in which results are returned. Valid values are DISTANCE, RELEVANCE, RATING, and POPULARITY."
+      ),
+    min_price: z
+      .number()
+      .optional()
+      .describe(
+        "Restricts results to only those places within the specified price range. Valid values range between 1 (most affordable) to 4 (most expensive), inclusive."
+      ),
+    max_price: z
+      .number()
+      .optional()
+      .describe(
+        "Restricts results to only those places within the specified price range. Valid values range between 1 (most affordable) to 4 (most expensive), inclusive."
+      ),
+    open_at: z
+      .string()
+      .optional()
+      .describe(
+        `Support local day and local time requests through this parameter. To be specified as DOWTHHMM (e.g., 1T2130), where DOW is the day number 1-7 (Monday = 1, Sunday = 7) and time is in 24 hour format.
+        Places that do not have opening hours will not be returned if this parameter is specified. Cannot be specified in conjunction with open_now.`
+      ),
+    open_now: z.boolean().optional()
+      .describe(`Restricts results to only those places that are open now.
+      Places that do not have opening hours will not be returned if this parameter is specified. Cannot be specified in conjunction with open_at.`),
     query: z
       .string()
       .describe("The search query string extracted from the message"),

@@ -3,6 +3,11 @@ import { config } from "../utils/config";
 export interface FoursquareSearchParams {
   query: string;
   near?: string;
+  open_now?: boolean;
+  open_at?: string;
+  min_price?: number;
+  max_price?: number;
+  sort: "DISTANCE" | "RELEVANCE" | "RATING" | "POPULARITY";
 }
 
 export interface FoursquareRestuarant {
@@ -11,6 +16,10 @@ export interface FoursquareRestuarant {
   latitude: number;
   longitude: number;
   website?: string;
+
+  location: {
+    formatted_address: string;
+  };
 }
 
 export interface FoursquareSearchResponse {
@@ -34,6 +43,21 @@ export const foursquareClient = {
     queryParams.append("query", params.query);
     if (params.near) {
       queryParams.append("near", params.near);
+    }
+    if (params.open_now !== undefined) {
+      queryParams.append("open_now", params.open_now ? "true" : "false");
+    }
+    if (params.sort) {
+      queryParams.append("sort", params.sort);
+    }
+    if (params.min_price !== undefined) {
+      queryParams.append("min_price", params.min_price.toString());
+    }
+    if (params.max_price !== undefined) {
+      queryParams.append("max_price", params.max_price.toString());
+    }
+    if (params.open_at) {
+      queryParams.append("open_at", params.open_at);
     }
 
     const response = await fetch(`${baseUrl}?${queryParams.toString()}`, {
