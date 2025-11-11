@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 import zodToJsonSchema from "zod-to-json-schema";
-import { querySchema } from "../integrations/gemini.client";
+import { querySchema } from "../types/gemini.schema";
 
 test("Sample test for schema", () => {
   const testSchema = querySchema;

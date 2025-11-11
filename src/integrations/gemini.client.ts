@@ -1,26 +1,12 @@
-import { GoogleGenAI, Type } from "@google/genai";
-import z from "zod";
+import { GoogleGenAI } from "@google/genai";
 import zodToJsonSchema from "zod-to-json-schema";
 import { GeminiRestaurantQueryResponse } from "../types/gemini.types";
+import { querySchema as geminiQuerySchema } from "../types/gemini.schema";
+import { config } from "../utils/config";
 
 const googleAi = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY || "",
+  apiKey: config.GEMINI_API_KEY,
 });
-
-export const querySchema = z
-  .object({
-    query: z
-      .string()
-      .describe("The search query string extracted from the message"),
-    near: z
-      .string()
-      .optional()
-      .describe(
-        'A string naming a locality in the world (e.g., "Chicago, IL"). If the value is not geocodable, returns an error. Global search results will be omitted.'
-      ),
-  })
-  .describe("Restaurant Query Schema");
-
 export const geminiClient = {
   /**
    *
@@ -34,7 +20,7 @@ export const geminiClient = {
       model: "gemini-2.5-flash",
       config: {
         responseMimeType: "application/json",
-        responseJsonSchema: zodToJsonSchema(querySchema),
+        responseJsonSchema: zodToJsonSchema(geminiQuerySchema),
         systemInstruction:
           "You are an assistant that extracts search parameters for finding restaurants from user messages. Respond only with a JSON object matching the specified schema. Provide near if a location is specified in the message.",
       },
@@ -46,6 +32,6 @@ export const geminiClient = {
     });
 
     console.log("Gemini Response:", response.text);
-    return querySchema.parse(JSON.parse(response.text ?? ""));
+    return geminiQuerySchema.parse(JSON.parse(response.text ?? ""));
   },
 };

@@ -1,3 +1,5 @@
+import { config } from "../utils/config";
+
 export interface FoursquareSearchParams {
   query: string;
   near?: string;
@@ -16,14 +18,14 @@ export interface FoursquareSearchResponse {
 }
 
 export const foursquareClient = {
+  /**
+   *
+   * @param params
+   * @returns
+   */
   async searchRestuarants(
     params: FoursquareSearchParams
   ): Promise<FoursquareSearchResponse> {
-    const apiKey = process.env.FOURSQUARE_API_KEY || "";
-    if (!apiKey) {
-      throw new Error("Foursquare API key is not configured");
-    }
-
     // foursqaure v3 places search is deprecated
     // api.foursquare.com/v3/places/search -> places-api.foursquare.com/places/search
     // migration guide: https://docs.foursquare.com/fsq-developers-places/reference/migration-guide
@@ -36,7 +38,7 @@ export const foursquareClient = {
 
     const response = await fetch(`${baseUrl}?${queryParams.toString()}`, {
       headers: {
-        Authorization: "Bearer " + apiKey,
+        Authorization: "Bearer " + config.FOURSQUARE_API_KEY,
         Accept: "application/json",
 
         // Must provide version for Foursquare API
